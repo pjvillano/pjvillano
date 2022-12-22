@@ -1,4 +1,4 @@
-- 👋 Hi, I’m @pjvillano, former USG and Microsoft 
+- 👋 Hi, I’m @pjvillano, former USG and Microsoft...
 - 👀 I’m interested in ... quantum computing, quantum resistant and post-quantum cryptography, quantum sensing, and related areas
 - 🌱 I’m currently learning ... CISSP CBK, quantum mechanics, linear algebra
 - 💞️ I’m looking to collaborate on ... ways to think about applied projects supporting quantum resistant and post-quantum cryptography
