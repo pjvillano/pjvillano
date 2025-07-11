@@ -1,10 +1,14 @@
-- 👋 Hi, I’m @pjvillano, currently leading government projects for IonQ ... former US Navy, US government technical program manager, and Microsoft
-- 👀 I’m interested in ... quantum computing, quantum resistant and post-quantum cryptography, quantum sensing, and related areas
-- 🌱 I’m currently learning ... quantum mechanics, linear algebra
-- 📖 I'm a current ms-cs student at University of Colorado Boulder via Coursera
-- 🌖 I’m looking to collaborate on ... [[near term]] ways to think about practical applied projects supporting quantum computing, sensing, and communications
-- 📫 How to reach me ... pjvillano@gmail.com / villano@ionq.co / @pjvillano 
+My name is Pete.
 
+I help field and scale emerging technologies for national security.
+
+My current interests are quantum computing & networking, applied artificial intelligence, and next-generation cybersecurity solutions.
+
+I work at IonQ Quantum and help align applied projects with U.S. government agencies.
+
+I am also a technical consultant to emerging technology and space companies via my two firms, New Harbor Collective and Villano Ventures.
+
+Please reach out if you are interested in teaming or learning more.- 📫 How to reach me ... pjvillano+github@gmail.com or villano@ionq.co
 <!---
 pjvillano/pjvillano is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 You can click the Preview link to take a look at your changes.
