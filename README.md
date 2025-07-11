@@ -8,7 +8,9 @@ I work at IonQ Quantum and help align applied projects with U.S. government agen
 
 I am also a technical consultant to emerging technology and space companies via my two firms, New Harbor Collective and Villano Ventures.
 
-Please reach out if you are interested in teaming or learning more.- 📫 How to reach me ... pjvillano+github@gmail.com or villano@ionq.co
+Please reach out if you are interested in teaming or learning more.
+
+pjvillano+github@gmail.com or villano@ionq.co
 
 https://pjvillano.bearblog.dev/
 
