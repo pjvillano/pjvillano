@@ -12,7 +12,7 @@ Please reach out if you are interested in teaming or learning more.
 
 pjvillano+github@gmail.com or villano@ionq.co
 
-https://pjvillano.bearblog.dev/
+https://pjvillano.com/
 
 <!---
 pjvillano/pjvillano is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
