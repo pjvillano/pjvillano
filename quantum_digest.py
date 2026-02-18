@@ -47,6 +47,24 @@ GOOGLE_NEWS_QUERIES = [
     ("IonQ IBM quantum government contract", "Industry & Contracts"),
     ("NIST post-quantum cryptography standard", "Cryptography & PQC"),
     ("quantum satellite communication government", "Space & Communications"),
+    # China
+    ("China quantum computing military national security", "China"),
+    ("China PLA quantum technology surveillance", "China"),
+    ("China quantum satellite network Micius", "China"),
+    ("China post-quantum cryptography standards", "China"),
+    # NATO
+    ("NATO quantum technology defense alliance", "NATO"),
+    ("NATO post-quantum cryptography communication", "NATO"),
+    ("NATO quantum sensing intelligence", "NATO"),
+    # Russia
+    ("Russia quantum computing military defense", "Russia"),
+    ("Russia quantum technology national security Rosatom", "Russia"),
+    ("Russia quantum cryptography communications", "Russia"),
+    # Europe
+    ("European Union Quantum Flagship program", "Europe"),
+    ("Europe quantum technology national security defense", "Europe"),
+    ("UK Germany France quantum computing government", "Europe"),
+    ("EuroQCI European quantum communication infrastructure", "Europe"),
 ]
 
 STATIC_FEEDS = [
@@ -104,6 +122,58 @@ STATIC_FEEDS = [
         "url": "https://www.militarytimes.com/arc/outboundfeeds/rss/",
         "category": "Defense & Intelligence",
         "filter_keywords": ["quantum"],
+    },
+    # --- China ---
+    {
+        # Nikkei Asia covers China tech extensively and allows RSS
+        "name": "Nikkei Asia",
+        "url": "https://asia.nikkei.com/rss/feed/nar",
+        "category": "China",
+        "filter_keywords": ["quantum", "China", "PLA", "Beijing", "Huawei"],
+    },
+    {
+        # The Diplomat covers Asia-Pacific security / tech policy
+        "name": "The Diplomat",
+        "url": "https://thediplomat.com/feed/",
+        "category": "China",
+        "filter_keywords": ["quantum", "China", "PLA", "Beijing"],
+    },
+    # --- NATO ---
+    # NATO-specific news is covered by the three Google News queries above.
+    # Add static feeds here if your network can reach nato.int or defensenews.com.
+    # --- Russia ---
+    {
+        "name": "TASS (English)",
+        "url": "https://tass.com/rss/v2.xml",
+        "category": "Russia",
+        "filter_keywords": ["quantum"],
+    },
+    {
+        "name": "The Moscow Times – Tech",
+        "url": "https://www.themoscowtimes.com/rss/news",
+        "category": "Russia",
+        "filter_keywords": ["quantum"],
+    },
+    # --- Europe ---
+    {
+        "name": "Politico Europe",
+        "url": "https://www.politico.eu/feed/",
+        "category": "Europe",
+        "filter_keywords": ["quantum"],
+    },
+    {
+        "name": "EurActiv",
+        "url": "https://www.euractiv.com/feed/",
+        "category": "Europe",
+        "filter_keywords": ["quantum"],
+    },
+    {
+        "name": "The Quantum Insider – Europe",
+        "url": "https://thequantuminsider.com/feed/",
+        "category": "Europe",
+        "filter_keywords": ["Europe", "EU", "European", "EuroQCI", "Quantum Flagship",
+                            "UK", "Germany", "France", "Netherlands", "Finland",
+                            "Sweden", "Denmark", "NATO"],
     },
 ]
 
@@ -261,6 +331,10 @@ CATEGORY_ORDER = [
     "Industry & Contracts",
     "Space & Communications",
     "Science & Research",
+    "China",
+    "NATO",
+    "Russia",
+    "Europe",
 ]
 
 
@@ -307,6 +381,10 @@ CATEGORY_COLORS = {
     "Industry & Contracts":   "bright_magenta",
     "Space & Communications": "bright_cyan",
     "Science & Research":     "cyan",
+    "China":                  "red1",
+    "NATO":                   "deep_sky_blue1",
+    "Russia":                 "dark_orange",
+    "Europe":                 "steel_blue1",
 }
 
 
