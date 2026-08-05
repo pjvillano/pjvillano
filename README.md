@@ -12,8 +12,6 @@ Please reach out if you are interested in teaming or learning more.
 
 pjvillano+github@gmail.com or villano@ionq.co
 
-https://pjvillano.com/
-
 <!---
 pjvillano/pjvillano is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 You can click the Preview link to take a look at your changes.
