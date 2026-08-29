@@ -1,0 +1,760 @@
+<title>Photonic Study Bench</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #eef0ec;
+    --surface: #ffffff;
+    --surface-sunken: #e4e7e0;
+    --text: #1b2320;
+    --text-muted: #5b655f;
+    --border: rgba(27, 35, 32, 0.14);
+    --border-strong: rgba(27, 35, 32, 0.28);
+    --accent-1: #3457a6;
+    --accent-1-soft: rgba(52, 87, 166, 0.12);
+    --accent-2: #a3771f;
+    --accent-2-soft: rgba(163, 119, 31, 0.14);
+    --accent-3: #a83636;
+    --accent-3-soft: rgba(168, 54, 54, 0.12);
+    --good: #2f7a4f;
+    --good-soft: rgba(47, 122, 79, 0.14);
+    --shadow: 0 1px 2px rgba(20, 24, 20, 0.06), 0 8px 24px -12px rgba(20, 24, 20, 0.18);
+    --dot: rgba(27, 35, 32, 0.10);
+    color-scheme: light;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #10151a;
+      --surface: #171e24;
+      --surface-sunken: #0c1116;
+      --text: #e8ece7;
+      --text-muted: #9aa7a0;
+      --border: rgba(232, 236, 231, 0.14);
+      --border-strong: rgba(232, 236, 231, 0.28);
+      --accent-1: #7fa0e6;
+      --accent-1-soft: rgba(127, 160, 230, 0.16);
+      --accent-2: #dcae52;
+      --accent-2-soft: rgba(220, 174, 82, 0.16);
+      --accent-3: #e08279;
+      --accent-3-soft: rgba(224, 130, 121, 0.16);
+      --good: #6fc492;
+      --good-soft: rgba(111, 196, 146, 0.16);
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 28px -12px rgba(0, 0, 0, 0.6);
+      --dot: rgba(232, 236, 231, 0.10);
+      color-scheme: dark;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #10151a;
+    --surface: #171e24;
+    --surface-sunken: #0c1116;
+    --text: #e8ece7;
+    --text-muted: #9aa7a0;
+    --border: rgba(232, 236, 231, 0.14);
+    --border-strong: rgba(232, 236, 231, 0.28);
+    --accent-1: #7fa0e6;
+    --accent-1-soft: rgba(127, 160, 230, 0.16);
+    --accent-2: #dcae52;
+    --accent-2-soft: rgba(220, 174, 82, 0.16);
+    --accent-3: #e08279;
+    --accent-3-soft: rgba(224, 130, 121, 0.16);
+    --good: #6fc492;
+    --good-soft: rgba(111, 196, 146, 0.16);
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 28px -12px rgba(0, 0, 0, 0.6);
+    --dot: rgba(232, 236, 231, 0.10);
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background:
+      radial-gradient(var(--dot) 1.1px, transparent 1.1px);
+    background-size: 22px 22px;
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 {
+    font-family: "Source Serif 4", Georgia, serif;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  .mono {
+    font-family: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
+  }
+
+  a { color: var(--accent-1); }
+
+  .shell {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 28px 20px 64px;
+  }
+
+  header.top {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .eyebrow {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  header.top h1 {
+    font-size: clamp(26px, 4vw, 34px);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  header.top p {
+    margin: 6px 0 0;
+    color: var(--text-muted);
+    font-size: 14.5px;
+    max-width: 62ch;
+    line-height: 1.55;
+  }
+
+  nav.tabs {
+    display: flex;
+    gap: 6px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+
+  nav.tabs button {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12.5px;
+    letter-spacing: 0.02em;
+    padding: 8px 14px;
+    border-radius: 7px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+  }
+
+  nav.tabs button:hover { border-color: var(--border-strong); color: var(--text); }
+
+  nav.tabs button[aria-selected="true"] {
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+  }
+
+  nav.tabs button:focus-visible,
+  button:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2px solid var(--accent-1);
+    outline-offset: 2px;
+  }
+
+  .panel { margin-top: 26px; }
+  [hidden] { display: none !important; }
+
+  .filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+
+  .chip {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11.5px;
+    padding: 6px 11px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-muted);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .chip .swatch {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: currentColor;
+  }
+
+  .chip[aria-pressed="true"] {
+    color: var(--text);
+    border-color: var(--border-strong);
+    background: var(--surface-sunken);
+  }
+
+  .chip.m1[aria-pressed="true"] { color: var(--accent-1); border-color: var(--accent-1); background: var(--accent-1-soft); }
+  .chip.m2[aria-pressed="true"] { color: var(--accent-2); border-color: var(--accent-2); background: var(--accent-2-soft); }
+  .chip.m3[aria-pressed="true"] { color: var(--accent-3); border-color: var(--accent-3); background: var(--accent-3-soft); }
+
+  .deck-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 12px;
+    color: var(--text-muted);
+    font-size: 12.5px;
+  }
+
+  .deck-status .count { font-family: "IBM Plex Mono", monospace; }
+
+  .stage {
+    perspective: 1400px;
+  }
+
+  .card {
+    position: relative;
+    min-height: 260px;
+    border-radius: 14px;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: transform 0.5s cubic-bezier(.2,.7,.3,1);
+  }
+
+  .card.flipped { transform: rotateY(180deg); }
+
+  .face {
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    backface-visibility: hidden;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    border-left: 4px solid var(--m-color, var(--accent-1));
+  }
+
+  .face.back { transform: rotateY(180deg); background: var(--surface-sunken); }
+
+  .face .tag {
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
+    color: var(--m-color, var(--accent-1));
+  }
+
+  .face .body {
+    font-size: 18px;
+    line-height: 1.5;
+    font-family: "Source Serif 4", Georgia, serif;
+  }
+
+  .face.back .body {
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--text);
+  }
+
+  .face .hint {
+    margin-top: auto;
+    color: var(--text-muted);
+    font-size: 11.5px;
+    font-family: "IBM Plex Mono", monospace;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card { transition: none; }
+    .card.flipped .face:not(.back) { display: none; }
+    .card:not(.flipped) .face.back { display: none; }
+    .card.flipped { transform: none; }
+    .face.back { transform: none; }
+  }
+
+  .controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-top: 18px;
+    flex-wrap: wrap;
+  }
+
+  .controls .grade {
+    display: flex;
+    gap: 8px;
+  }
+
+  button.btn {
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 9px 15px;
+    border-radius: 8px;
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+  }
+
+  button.btn:hover { background: var(--surface-sunken); }
+
+  button.btn.primary {
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+  }
+
+  button.btn.good { color: var(--good); border-color: var(--good); background: var(--good-soft); }
+  button.btn.again { color: var(--accent-3); border-color: var(--accent-3); background: var(--accent-3-soft); }
+
+  .nav-arrows { display: flex; gap: 8px; }
+  .nav-arrows button { width: 38px; padding: 9px 0; text-align: center; }
+
+  .quiz-card {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    padding: 26px 28px;
+    border-left: 4px solid var(--m-color, var(--accent-1));
+  }
+
+  .quiz-card .tag { font-size: 11.5px; letter-spacing: 0.06em; color: var(--m-color, var(--accent-1)); }
+  .quiz-card .q { font-family: "Source Serif 4", Georgia, serif; font-size: 18px; line-height: 1.55; margin-top: 10px; }
+
+  .reveal {
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--border-strong);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  .reveal .label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--good);
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .progress-bar {
+    height: 4px;
+    border-radius: 999px;
+    background: var(--surface-sunken);
+    overflow: hidden;
+    margin-top: 14px;
+  }
+  .progress-bar > div {
+    height: 100%;
+    background: var(--accent-1);
+    transition: width 0.3s ease;
+  }
+
+  .diagram-block {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    padding: 24px;
+    margin-bottom: 22px;
+  }
+
+  .diagram-block h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+  .diagram-block .cap { color: var(--text-muted); font-size: 13px; margin: 4px 0 16px; line-height: 1.55; }
+  .diagram-scroll { overflow-x: auto; }
+  svg text { font-family: "IBM Plex Mono", monospace; }
+
+  footer.credits {
+    margin-top: 40px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 12px;
+  }
+
+  kbd {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10.5px;
+    border: 1px solid var(--border-strong);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    padding: 1px 5px;
+    background: var(--surface-sunken);
+  }
+</style>
+
+<div class="shell">
+  <header class="top">
+    <span class="eyebrow">study companion &middot; quantum systems tutor</span>
+    <h1>Photonic Study Bench</h1>
+    <p>Flashcards, scenario drills, and reference diagrams for quantum computing, distributed quantum computing, and the photonic links that connect nodes together. Source content lives in <span class="mono">study/</span> and grows as you go.</p>
+    <nav class="tabs" role="tablist" aria-label="Study mode">
+      <button role="tab" id="tab-cards" aria-selected="true" aria-controls="panel-cards">Flashcards</button>
+      <button role="tab" id="tab-quiz" aria-selected="false" aria-controls="panel-quiz">Scenario quiz</button>
+      <button role="tab" id="tab-diagram" aria-selected="false" aria-controls="panel-diagram">Diagrams</button>
+    </nav>
+  </header>
+
+  <section class="panel" id="panel-cards" role="tabpanel" aria-labelledby="tab-cards">
+    <div class="filters" id="card-filters"></div>
+    <div class="deck-status">
+      <span id="card-position" class="count">—</span>
+      <span id="card-mastered" class="count">0 mastered</span>
+    </div>
+    <div class="stage">
+      <div class="card" id="flash-card" tabindex="0" role="button" aria-label="Flip card">
+        <div class="face front">
+          <span class="tag mono" id="fc-tag-front">M1 &middot; Q1</span>
+          <div class="body" id="fc-question">Loading…</div>
+          <span class="hint">click, or press <kbd>space</kbd>, to flip</span>
+        </div>
+        <div class="face back">
+          <span class="tag mono" id="fc-tag-back">M1 &middot; Q1</span>
+          <div class="body" id="fc-answer">Loading…</div>
+          <span class="hint">how did you do?</span>
+        </div>
+      </div>
+    </div>
+    <div class="progress-bar"><div id="deck-progress" style="width:0%"></div></div>
+    <div class="controls">
+      <div class="nav-arrows">
+        <button class="btn" id="fc-prev" aria-label="Previous card">&larr;</button>
+        <button class="btn" id="fc-shuffle" aria-label="Shuffle deck">shuffle</button>
+        <button class="btn" id="fc-next" aria-label="Next card">&rarr;</button>
+      </div>
+      <div class="grade">
+        <button class="btn again" id="fc-again">Again</button>
+        <button class="btn good" id="fc-good">Got it</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-quiz" role="tabpanel" aria-labelledby="tab-quiz" hidden>
+    <div class="filters" id="quiz-filters"></div>
+    <div class="deck-status">
+      <span id="quiz-position" class="count">—</span>
+      <span id="quiz-answered" class="count">0 reviewed</span>
+    </div>
+    <div class="quiz-card">
+      <span class="tag mono" id="q-tag">M1 &middot; Q1</span>
+      <div class="q" id="q-question">Loading…</div>
+      <div class="reveal" id="q-reveal" hidden>
+        <span class="label">explanation</span>
+        <span id="q-answer"></span>
+      </div>
+    </div>
+    <div class="controls">
+      <div class="nav-arrows">
+        <button class="btn" id="q-prev" aria-label="Previous question">&larr;</button>
+        <button class="btn" id="q-next" aria-label="Next question">&rarr;</button>
+      </div>
+      <button class="btn primary" id="q-toggle">Reveal answer</button>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-diagram" role="tabpanel" aria-labelledby="tab-diagram" hidden>
+    <div class="diagram-block">
+      <h3>Entanglement swapping across a repeater</h3>
+      <p class="cap">Node A and Node C have never interacted directly. Each shares an entangled photon pair with the repeater B. A joint Bell-state measurement at B swaps the entanglement onto the A&ndash;C link — the mechanism every longer quantum network reduces to.</p>
+      <div class="diagram-scroll">
+        <svg viewBox="0 0 720 220" width="720" height="220" role="img" aria-label="Diagram of entanglement swapping between node A, repeater B, and node C">
+          <line x1="90" y1="120" x2="330" y2="120" stroke="var(--accent-3)" stroke-width="2" stroke-dasharray="6 5"/>
+          <line x1="390" y1="120" x2="630" y2="120" stroke="var(--accent-3)" stroke-width="2" stroke-dasharray="6 5"/>
+          <path d="M90,150 C220,190 220,190 330,150" fill="none" stroke="var(--text-muted)" stroke-width="1.4" stroke-dasharray="2 5"/>
+          <path d="M390,150 C520,190 520,190 630,150" fill="none" stroke="var(--text-muted)" stroke-width="1.4" stroke-dasharray="2 5"/>
+          <circle cx="60" cy="120" r="30" fill="var(--surface)" stroke="var(--accent-1)" stroke-width="2.5"/>
+          <text x="60" y="125" text-anchor="middle" font-size="13" fill="var(--accent-1)" font-weight="600">A</text>
+          <circle cx="360" cy="120" r="34" fill="var(--surface)" stroke="var(--accent-2)" stroke-width="2.5"/>
+          <text x="360" y="117" text-anchor="middle" font-size="12" fill="var(--accent-2)" font-weight="600">B</text>
+          <text x="360" y="132" text-anchor="middle" font-size="9" fill="var(--accent-2)">BSM</text>
+          <circle cx="660" cy="120" r="30" fill="var(--surface)" stroke="var(--accent-1)" stroke-width="2.5"/>
+          <text x="660" y="125" text-anchor="middle" font-size="13" fill="var(--accent-1)" font-weight="600">C</text>
+          <text x="210" y="105" text-anchor="middle" font-size="10" fill="var(--text-muted)">photonic link (entangled pair)</text>
+          <text x="510" y="105" text-anchor="middle" font-size="10" fill="var(--text-muted)">photonic link (entangled pair)</text>
+          <text x="210" y="205" text-anchor="middle" font-size="9" fill="var(--text-muted)">classical channel</text>
+          <text x="510" y="205" text-anchor="middle" font-size="9" fill="var(--text-muted)">classical channel</text>
+          <text x="360" y="35" text-anchor="middle" font-size="10" fill="var(--text)">after BSM: A&ndash;C entangled, B never held both ends of one pair</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="diagram-block">
+      <h3>Proposed quantum internet stack</h3>
+      <p class="cap">Layers parallel classical networking, but the physical layer's job is generating and swapping entanglement rather than moving bits — see <span class="mono">study/curriculum.md</span> module 2.7 for detail.</p>
+      <div class="diagram-scroll">
+        <svg viewBox="0 0 720 210" width="720" height="210" role="img" aria-label="Diagram of the layered quantum internet stack from physical to application">
+          <g font-size="12">
+            <rect x="10" y="10" width="700" height="34" rx="7" fill="var(--accent-3-soft)" stroke="var(--accent-3)"/>
+            <text x="30" y="32" fill="var(--accent-3)" font-weight="600">Physical &mdash; entanglement generation (photon sources, detectors)</text>
+            <rect x="10" y="52" width="700" height="34" rx="7" fill="var(--accent-2-soft)" stroke="var(--accent-2)"/>
+            <text x="30" y="74" fill="var(--accent-2)" font-weight="600">Link &mdash; heralded entanglement between neighbors, purification</text>
+            <rect x="10" y="94" width="700" height="34" rx="7" fill="var(--accent-1-soft)" stroke="var(--accent-1)"/>
+            <text x="30" y="116" fill="var(--accent-1)" font-weight="600">Network &mdash; entanglement swapping / routing across repeaters</text>
+            <rect x="10" y="136" width="700" height="34" rx="7" fill="var(--surface-sunken)" stroke="var(--border-strong)"/>
+            <text x="30" y="158" fill="var(--text)" font-weight="600">Transport &mdash; end-to-end entangled pairs on demand, fidelity guarantees</text>
+            <rect x="10" y="178" width="700" height="24" rx="7" fill="var(--surface-sunken)" stroke="var(--border-strong)"/>
+            <text x="30" y="195" fill="var(--text)" font-weight="600" font-size="11">Application &mdash; QKD, distributed computing, sensing</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <footer class="credits">
+    Maintained by the <span class="mono">quantum-systems-tutor</span> agent (<span class="mono">.claude/agents/quantum-systems-tutor.md</span>). Ask it to add cards, quiz questions, or new diagrams as the curriculum grows.
+  </footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var MODULES = {
+    1: { label: "M1 · Fundamentals", color: "var(--accent-1)", cls: "m1" },
+    2: { label: "M2 · Distributed", color: "var(--accent-2)", cls: "m2" },
+    3: { label: "M3 · Photonic", color: "var(--accent-3)", cls: "m3" }
+  };
+
+  var FLASHCARDS = [
+    {id:"Q1",m:1,q:"What does superposition let a qubit do that a classical bit can't?",a:"Exist in a weighted combination of |0⟩ and |1⟩ simultaneously (α|0⟩ + β|1⟩), rather than being fixed at exactly one value — measurement then collapses it to 0 or 1 with probability |α|² / |β|²."},
+    {id:"Q2",m:1,q:"Why does an N-qubit system require 2^N complex amplitudes to describe, and why does that matter?",a:"Each qubit's basis states combine multiplicatively (tensor product), so N qubits span a 2^N-dimensional space. It's why classical computers can't efficiently simulate general quantum states past ~50 qubits, and it's the source of quantum computing's potential speedup."},
+    {id:"Q3",m:1,q:"What is the no-cloning theorem and why does it matter for networking?",a:"It's impossible to create an identical copy of an arbitrary unknown quantum state. It means you can't 'just copy' quantum information across a network the way you copy classical packets — entanglement/teleportation schemes exist precisely because of this constraint."},
+    {id:"Q4",m:1,q:"What's the practical difference between T1 and T2 coherence times?",a:"T1 is energy relaxation time (how long before the qubit decays to |0⟩); T2 is dephasing time (how long relative phase information survives). T2 ≤ 2×T1, and T2 is usually the tighter constraint on algorithm runtime."},
+    {id:"Q5",m:1,q:"What's a 'logical qubit' vs. a 'physical qubit'?",a:"A physical qubit is one real hardware qubit; a logical qubit is an error-corrected qubit built from many physical qubits (e.g. dozens to thousands, depending on the code and target error rate) that behaves as one much-lower-error qubit."},
+    {id:"Q6",m:1,q:"Why does two-qubit gate fidelity dominate system error budgets more than single-qubit gate fidelity?",a:"Two-qubit gates are harder to implement precisely and typically have error rates 5–10× worse than single-qubit gates, and circuits use many more of them as width/depth grow — so they set the practical ceiling on circuit size."},
+    {id:"Q7",m:1,q:"What defines the 'NISQ era' and what's its main workaround for lack of error correction?",a:"Noisy Intermediate-Scale Quantum devices: tens to a few thousand qubits, no full error correction, limited circuit depth before noise dominates. The main workaround is variational/hybrid algorithms (e.g. VQE, QAOA) that use short circuits plus classical optimization loops."},
+    {id:"Q8",m:1,q:"Name the four major hardware modalities and one key tradeoff each.",a:"Superconducting (fast gates, short coherence, needs dilution fridge); trapped ion (very high fidelity, all-to-all connectivity, slower gates); photonic (room temp possible, natural for networking, hard to do deterministic two-qubit gates); neutral atom (scalable via optical tweezers, flexible connectivity, still maturing on gate fidelity)."},
+    {id:"Q9",m:2,q:"Why pursue distributed/modular quantum computing instead of one large monolithic processor?",a:"Chip-scale wiring, crosstalk, cooling, and control-electronics density all get harder as qubit count grows on a single chip; linking smaller, well-characterized modules via quantum interconnects is a more scalable path than indefinitely scaling one module."},
+    {id:"Q10",m:2,q:"What is the fundamental 'networking primitive' in quantum networks, and how is it different from classical networking?",a:"Distributed entanglement between nodes. Classical networks move copies of bits; quantum networks generate and distribute entangled pairs, then use them (with classical communication) to move or operate on quantum information — you can't just 'send the qubit' losslessly at scale."},
+    {id:"Q11",m:2,q:"Walk through quantum teleportation in one sentence, and name what it requires.",a:"Using a pre-shared entangled pair plus a Bell-state measurement on the sender's side and two classical bits sent to the receiver, an unknown qubit's state is reconstructed at the receiver (destroying the original) — it requires pre-existing entanglement and a classical channel, and does not transmit information faster than light."},
+    {id:"Q12",m:2,q:"What does entanglement swapping accomplish?",a:"It extends entanglement across a hop that was never directly entangled: if A-B and B-C are entangled, a Bell measurement at B 'swaps' the entanglement so A-C become entangled, without A and C ever directly interacting."},
+    {id:"Q13",m:2,q:"What problem does entanglement purification solve, and at what cost?",a:"It takes multiple copies of noisy/low-fidelity entangled pairs and distills fewer, higher-fidelity pairs (e.g. BBPSSW, DEJMPS protocols) — the cost is consuming more raw entangled pairs (and time) per usable high-fidelity pair."},
+    {id:"Q14",m:2,q:"Why can't you just send entangled photons directly over arbitrarily long fiber without repeaters?",a:"Fiber loss is exponential in distance (~0.2 dB/km at telecom wavelength), so direct transmission success probability collapses over hundreds of km — repeaters break the link into shorter segments where entanglement is generated locally then swapped/purified, avoiding end-to-end exponential loss."},
+    {id:"Q15",m:2,q:"What is the core idea of the DLCZ quantum repeater protocol?",a:"Use atomic ensembles (or similar quantum memories) at repeater nodes to heraldedly store entanglement generated with photons over each segment, then perform entanglement swapping between adjacent segments once both succeed — trading a memory requirement for beating direct-transmission loss scaling."},
+    {id:"Q16",m:2,q:"How does the proposed 'quantum internet stack' parallel the classical OSI/TCP-IP stack, at a high level?",a:"It's similarly layered (physical link generation → entanglement distribution → network-wide routing → transport → application), but the physical layer's job is generating and swapping entanglement rather than moving classical bits, and 'packets' don't survive copying the way classical ones do."},
+    {id:"Q17",m:3,q:"Why are photons the natural choice for carrying quantum information between nodes?",a:"They interact weakly with their environment (long coherence while in flight) and travel near the speed of light, making them ideal 'flying qubits' for transmission — the tradeoff is they're hard to store and easy to lose (absorption/scattering)."},
+    {id:"Q18",m:3,q:"Name three ways to encode a qubit in a photon and one tradeoff for each.",a:"Polarization (simple, but drifts in standard fiber and needs active compensation); time-bin (robust to fiber polarization drift, but requires stable interferometric timing); path/dual-rail (natural for integrated photonics, harder over long fiber distances than time-bin)."},
+    {id:"Q19",m:3,q:"What is 'matter–photon transduction' and why is it needed?",a:"Converting information between a stationary matter qubit (ion, atom, superconducting circuit) and a flying photonic qubit, so a memory/processing qubit can be entangled with a photon for transmission — needed because matter qubits can't travel through fiber and photons can't be stored/processed like matter qubits."},
+    {id:"Q20",m:3,q:"How do trapped-ion systems typically generate ion-photon entanglement?",a:"An ion is excited such that its spontaneous emission photon's properties (e.g. polarization or frequency) are entangled with the ion's internal state — collecting and interfering photons from two distant ions, with a successful joint measurement, heralds ion-ion entanglement."},
+    {id:"Q21",m:3,q:"What is microwave-to-optical transduction and which modality needs it most?",a:"Converting a superconducting qubit's native microwave-frequency signal into an optical photon (and back), since microwave photons don't survive room-temperature fiber transport — needed for networking superconducting processors, and still an active research problem."},
+    {id:"Q22",m:3,q:"Why is loss usually the dominant error mechanism in photonic links, more than decoherence?",a:"A lost photon simply fails to arrive (a heralded, detectable failure you retry), but the loss probability compounds exponentially with distance/interfaces — at practical link lengths, the rate of failed attempts, not corruption of surviving photons, is what limits throughput."},
+    {id:"Q23",m:3,q:"Roughly what is fiber attenuation at telecom wavelength (~1550nm) and why does that number matter?",a:"About 0.2 dB/km — it's the reference number for link-budget and repeater-spacing calculations; native emission wavelengths of many qubit modalities are much lossier in fiber, which is why frequency conversion to telecom bands matters."},
+    {id:"Q24",m:3,q:"What is an SNSPD and why does it matter for photonic interconnects?",a:"A Superconducting Nanowire Single-Photon Detector — an extremely low-noise, high-efficiency single-photon detector (cryogenic) that's become the workhorse detector for quantum-photonic experiments because low dark counts and high efficiency matter when photon rates are already loss-limited."},
+    {id:"Q25",m:3,q:"Why convert a qubit's native emission wavelength to a telecom band before sending it over fiber?",a:"Many qubit platforms emit at wavelengths with much higher fiber loss than the telecom C-band (~1550nm); nonlinear frequency conversion trades some efficiency/noise for dramatically lower transmission loss over realistic distances."},
+    {id:"Q26",m:3,q:"What does wavelength-division multiplexing (WDM) buy a quantum network, similar to classical networks?",a:"Parallel entanglement-distribution channels over one fiber, by assigning different frequency channels to different photon pairs/links — increasing effective entanglement-generation rate without needing more fiber."},
+    {id:"Q27",m:3,q:"Give one example of a real-world demonstration relevant to photonic quantum interconnects.",a:"Examples include chip-to-chip photonic entanglement links between integrated photonic circuits, campus-scale fiber entanglement distribution testbeds, and satellite-based entanglement distribution (e.g. Micius) extending links beyond fiber-loss-limited ground distances."}
+  ];
+
+  var QUIZ = [
+    {n:1,m:1,q:"A vendor claims their new chip has '1000 qubits' and is more powerful than a 100-qubit competitor. What single additional number would most change your assessment, and why?",a:"Two-qubit gate error rate (or quantum volume / effective circuit depth before noise dominates). Raw qubit count without connectivity and gate fidelity tells you almost nothing about what circuits the device can actually run."},
+    {n:2,m:1,q:"You're deciding between running an algorithm on today's hardware now (NISQ, variational approach) vs. waiting for fault-tolerant hardware. What determines which is the right call?",a:"Whether the algorithm's advantage requires deep circuits that noise will wash out before completion. Shallow, hybrid classical-quantum algorithms can extract value now; algorithms needing long coherent depth need fault tolerance."},
+    {n:3,m:1,q:"A colleague says 'T2 = 100 µs, so we have 100 µs to run our algorithm.' What's wrong with that framing?",a:"T2 bounds idle phase coherence, but usable circuit time is much shorter once you account for gate durations and per-gate error accumulation, which compounds independently of idle dephasing — the practical constraint is circuit depth × gate error, not raw T2."},
+    {n:4,m:2,q:"Two quantum processors, A and C, need to become entangled, but only A-B and B-C links exist. What technique lets you entangle A and C, and what's the key operation at B?",a:"Entanglement swapping. A Bell-state measurement is performed at B on its two halves of the A-B and B-C pairs, which — conditioned on classical communication of the result — leaves A and C entangled without ever directly interacting."},
+    {n:5,m:2,q:"Your nodes generate entangled pairs at high rate but only 70% fidelity, and your application needs ≥95%. What's the standard fix, and what do you give up?",a:"Entanglement purification (e.g. BBPSSW/DEJMPS): consume multiple low-fidelity pairs to distill fewer high-fidelity pairs. The cost is throughput — raw entanglement-generation rate falls."},
+    {n:6,m:2,q:"You're designing a 500 km quantum link where photon loss makes direct entanglement generation vanishingly likely. Why doesn't 'boosting laser power' fix this the way it might in classical optical networking, and what's the real fix?",a:"Quantum information can't be amplified without violating no-cloning — a classical amplifier would have to measure and copy the state, destroying it. The fix is quantum repeaters: shorter segments, local entanglement plus swapping, so loss scales with segment length, not total distance."},
+    {n:7,m:2,q:"A team proposes teleporting qubits between two nodes for every cross-node two-qubit gate. What must already be established before each remote gate, and why can't it happen faster than light?",a:"A pre-shared entangled pair plus a classical channel to send measurement results — teleportation reconstructs state using classical bits sent at or below light speed, so the protocol is bounded by classical communication latency."},
+    {n:8,m:3,q:"You need to link two ion-trap nodes 2 km apart over telecom fiber. The ions emit at 493 nm (~3 dB/km loss). What two techniques would you combine, and why?",a:"Frequency conversion to a telecom band (~1550 nm, ~0.2 dB/km) to cut loss roughly an order of magnitude per km, plus purification or a repeater architecture if resulting rate/fidelity still falls short — conversion is close to mandatory given native-wavelength loss."},
+    {n:9,m:3,q:"Between polarization and time-bin encoding, which would you choose for a qubit traveling tens of km through standard deployed fiber, and why?",a:"Time-bin encoding — standard fiber causes polarization drift that needs active compensation, while time-bin (relative pulse arrival time) is inherently robust to that drift, at the cost of needing stable interferometers at each end."},
+    {n:10,m:3,q:"A detector reports 40% overall system detection efficiency. A collaborator says 'let's just increase source brightness to compensate.' Is that a full fix?",a:"Not fully — low efficiency reduces the rate of successful heralded events (loss is typically heralded, not corrupting), so brighter sources help throughput. But it doesn't fix noise/dark-count fidelity issues, and past a point multi-photon emission can itself degrade fidelity."},
+    {n:11,m:3,q:"You're networking superconducting qubits (native ~5 GHz microwave). Why can't you just run coaxial cable between two fridges, and what's the alternative?",a:"Microwave photons don't survive room-temperature transport — thermal noise swamps a single microwave photon's energy, and cooling the whole link doesn't scale. The alternative is microwave-to-optical transduction: convert to an optical photon, send it, convert back."},
+    {n:12,m:3,q:"Two integrated photonic chips need to be entangled for a distributed computing demo. What's one advantage integration has over free-space setups, and one thing it still doesn't solve?",a:"Advantage: stability, reproducibility, and a path to scaling channel count and component density versus a bulky free-space table. It doesn't solve loss, decoherence, or transduction physics — those are the same fundamental problems on-chip or off."},
+    {n:13,m:3,q:"A satellite-based link (like Micius) distributes entangled photons to ground stations thousands of km apart. Why can this beat a ground-fiber link over the same distance?",a:"Free-space loss through atmosphere plus vacuum scales far more favorably with distance than fiber's exponential-per-km attenuation — a satellite link mostly traverses near-lossless vacuum, so total loss over thousands of km can be much lower than equivalent fiber."}
+  ];
+
+  var STORAGE_KEY = "photonic-study-bench:v1";
+
+  function loadProgress() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) { return {}; }
+  }
+  function saveProgress(p) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); } catch (e) {}
+  }
+  var progress = loadProgress();
+
+  // ---- Tabs ----
+  var tabs = [
+    { btn: document.getElementById("tab-cards"), panel: document.getElementById("panel-cards") },
+    { btn: document.getElementById("tab-quiz"), panel: document.getElementById("panel-quiz") },
+    { btn: document.getElementById("tab-diagram"), panel: document.getElementById("panel-diagram") }
+  ];
+  tabs.forEach(function (t) {
+    t.btn.addEventListener("click", function () {
+      tabs.forEach(function (o) {
+        var active = o === t;
+        o.btn.setAttribute("aria-selected", active ? "true" : "false");
+        o.panel.hidden = !active;
+      });
+    });
+  });
+
+  // ---- Shared module filter chips ----
+  function buildFilters(container, activeSet, onChange) {
+    container.innerHTML = "";
+    [1, 2, 3].forEach(function (m) {
+      var chip = document.createElement("button");
+      chip.className = "chip " + MODULES[m].cls;
+      chip.setAttribute("aria-pressed", activeSet.has(m) ? "true" : "false");
+      chip.innerHTML = '<span class="swatch" style="color:' + MODULES[m].color + '"></span>' + MODULES[m].label;
+      chip.addEventListener("click", function () {
+        if (activeSet.has(m) && activeSet.size === 1) return;
+        if (activeSet.has(m)) activeSet.delete(m); else activeSet.add(m);
+        chip.setAttribute("aria-pressed", activeSet.has(m) ? "true" : "false");
+        onChange();
+      });
+      container.appendChild(chip);
+    });
+  }
+
+  // ---- Flashcards ----
+  var fcActive = new Set([1, 2, 3]);
+  var fcOrder = FLASHCARDS.map(function (c) { return c.id; });
+  var fcIndex = 0;
+  var fcFlipped = false;
+
+  var fcCardEl = document.getElementById("flash-card");
+  var fcQuestion = document.getElementById("fc-question");
+  var fcAnswer = document.getElementById("fc-answer");
+  var fcTagFront = document.getElementById("fc-tag-front");
+  var fcTagBack = document.getElementById("fc-tag-back");
+  var fcPosition = document.getElementById("card-position");
+  var fcMasteredEl = document.getElementById("card-mastered");
+  var fcProgress = document.getElementById("deck-progress");
+
+  function fcDeck() {
+    return fcOrder
+      .map(function (id) { return FLASHCARDS.filter(function (c) { return c.id === id; })[0]; })
+      .filter(function (c) { return fcActive.has(c.m); });
+  }
+
+  function renderCard() {
+    var deck = fcDeck();
+    if (fcIndex >= deck.length) fcIndex = 0;
+    var card = deck[fcIndex];
+    if (!card) {
+      fcQuestion.textContent = "No cards in this filter.";
+      fcAnswer.textContent = "";
+      fcPosition.textContent = "0 / 0";
+      return;
+    }
+    var mod = MODULES[card.m];
+    [fcTagFront, fcTagBack].forEach(function (el) { el.textContent = mod.label.split(" · ")[0] + " · " + card.id; });
+    fcCardEl.style.setProperty("--m-color", mod.color);
+    fcQuestion.textContent = card.q;
+    fcAnswer.textContent = card.a;
+    fcPosition.textContent = (fcIndex + 1) + " / " + deck.length;
+    fcCardEl.classList.remove("flipped");
+    fcFlipped = false;
+    var masteredCount = Object.keys(progress).filter(function (k) { return progress[k] === "good"; }).length;
+    fcMasteredEl.textContent = masteredCount + " / " + FLASHCARDS.length + " mastered";
+    fcProgress.style.width = (100 * masteredCount / FLASHCARDS.length) + "%";
+  }
+
+  function flip() { fcFlipped = !fcFlipped; fcCardEl.classList.toggle("flipped", fcFlipped); }
+
+  fcCardEl.addEventListener("click", flip);
+  fcCardEl.addEventListener("keydown", function (e) {
+    if (e.key === " " || e.key === "Enter") { e.preventDefault(); flip(); }
+  });
+  document.getElementById("fc-next").addEventListener("click", function () {
+    var deck = fcDeck(); fcIndex = (fcIndex + 1) % Math.max(deck.length, 1); renderCard();
+  });
+  document.getElementById("fc-prev").addEventListener("click", function () {
+    var deck = fcDeck(); fcIndex = (fcIndex - 1 + deck.length) % Math.max(deck.length, 1); renderCard();
+  });
+  document.getElementById("fc-shuffle").addEventListener("click", function () {
+    for (var i = fcOrder.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = fcOrder[i]; fcOrder[i] = fcOrder[j]; fcOrder[j] = tmp;
+    }
+    fcIndex = 0; renderCard();
+  });
+  function grade(result) {
+    var deck = fcDeck();
+    var card = deck[fcIndex];
+    if (card) { progress[card.id] = result; saveProgress(progress); }
+    var next = (fcIndex + 1) % Math.max(deck.length, 1);
+    fcIndex = next;
+    renderCard();
+  }
+  document.getElementById("fc-good").addEventListener("click", function () { grade("good"); });
+  document.getElementById("fc-again").addEventListener("click", function () { grade("again"); });
+
+  buildFilters(document.getElementById("card-filters"), fcActive, function () { fcIndex = 0; renderCard(); });
+  renderCard();
+
+  // ---- Quiz ----
+  var qzActive = new Set([1, 2, 3]);
+  var qzIndex = 0;
+  var qzRevealed = false;
+  var qzSeen = new Set();
+
+  var qzTag = document.getElementById("q-tag");
+  var qzQuestion = document.getElementById("q-question");
+  var qzRevealEl = document.getElementById("q-reveal");
+  var qzAnswerEl = document.getElementById("q-answer");
+  var qzToggle = document.getElementById("q-toggle");
+  var qzPosition = document.getElementById("quiz-position");
+  var qzAnsweredEl = document.getElementById("quiz-answered");
+  var quizCardEl = document.querySelector(".quiz-card");
+
+  function qzDeck() { return QUIZ.filter(function (q) { return qzActive.has(q.m); }); }
+
+  function renderQuiz() {
+    var deck = qzDeck();
+    if (qzIndex >= deck.length) qzIndex = 0;
+    var item = deck[qzIndex];
+    if (!item) {
+      qzQuestion.textContent = "No questions in this filter.";
+      qzRevealEl.hidden = true;
+      qzPosition.textContent = "0 / 0";
+      return;
+    }
+    var mod = MODULES[item.m];
+    quizCardEl.style.setProperty("--m-color", mod.color);
+    qzTag.textContent = mod.label.split(" · ")[0] + " · Q" + item.n;
+    qzQuestion.textContent = item.q;
+    qzAnswerEl.textContent = item.a;
+    qzRevealEl.hidden = true;
+    qzRevealed = false;
+    qzToggle.textContent = "Reveal answer";
+    qzPosition.textContent = (qzIndex + 1) + " / " + deck.length;
+    qzAnsweredEl.textContent = qzSeen.size + " / " + QUIZ.length + " reviewed";
+  }
+
+  qzToggle.addEventListener("click", function () {
+    qzRevealed = !qzRevealed;
+    qzRevealEl.hidden = !qzRevealed;
+    qzToggle.textContent = qzRevealed ? "Hide answer" : "Reveal answer";
+    if (qzRevealed) {
+      var deck = qzDeck();
+      var item = deck[qzIndex];
+      if (item) qzSeen.add(item.n);
+      qzAnsweredEl.textContent = qzSeen.size + " / " + QUIZ.length + " reviewed";
+    }
+  });
+  document.getElementById("q-next").addEventListener("click", function () {
+    var deck = qzDeck(); qzIndex = (qzIndex + 1) % Math.max(deck.length, 1); renderQuiz();
+  });
+  document.getElementById("q-prev").addEventListener("click", function () {
+    var deck = qzDeck(); qzIndex = (qzIndex - 1 + deck.length) % Math.max(deck.length, 1); renderQuiz();
+  });
+
+  buildFilters(document.getElementById("quiz-filters"), qzActive, function () { qzIndex = 0; renderQuiz(); });
+  renderQuiz();
+})();
+</script>
